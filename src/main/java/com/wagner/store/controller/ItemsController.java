@@ -4,6 +4,7 @@ import com.wagner.store.dto.ItemDTO;
 import com.wagner.store.errorHandling.StoreException;
 import com.wagner.store.service.ItemsService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 @RequestMapping("/items")
 public class ItemsController {
 
@@ -33,6 +35,7 @@ public class ItemsController {
         try {
             return itemsService.getById(id);
         } catch (StoreException e) {
+            log.warn("Item with id: " + id + " was not found: " + e.getMessage());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -45,6 +48,7 @@ public class ItemsController {
                 itemsService.updatePrice(id, itemDTO.getPrice());
             }
         } catch (StoreException e) {
+            log.error("Exception while trying to update item price: " + e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
@@ -57,6 +61,7 @@ public class ItemsController {
         try {
             itemsService.addItem(itemDTO);
         } catch (StoreException e) {
+            log.error("Exception while trying to add new item: " + e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());

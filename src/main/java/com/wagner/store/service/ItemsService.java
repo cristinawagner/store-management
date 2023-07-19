@@ -51,6 +51,7 @@ public class ItemsService {
     }
 
     public void updatePrice(Long id, Float price) throws StoreException {
+        log.info("Update Item with id: " + id + " with new price: " + price);
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new StoreException(String.format("Item with id: %d was not found.", id)));
         item.setPrice(price);
@@ -58,6 +59,7 @@ public class ItemsService {
     }
 
     public void addItem(ItemDTO itemDTO) throws StoreException {
+        log.info("Add new item: " + itemDTO.toString());
         Product product = productRepository
                 .findById(itemDTO.getProductDTO().getId())
                 .orElseThrow(() -> new StoreException(String
