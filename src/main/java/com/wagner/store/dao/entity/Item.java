@@ -1,9 +1,7 @@
 package com.wagner.store.dao.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -12,6 +10,9 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
 
     private Date createdAt;
@@ -20,19 +21,11 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String sku;
-
-    private Float discount;
     private Float price;
-
-    private Integer quantity;//=sold+available+defective
-
+    private Integer quantity;
     private Integer sold;
-
     private Integer available;
-
-    private Integer defective;
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
