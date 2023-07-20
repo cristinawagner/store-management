@@ -12,6 +12,7 @@ import com.wagner.store.util.MapperUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,12 +35,15 @@ public class ItemsService {
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDTO> getByProductName(String name) {
+    public List<ItemDTO> getByProductName(String name) throws StoreException {
         log.info("Retrieve items by product name: " + name);
-        return productRepository.findByNameContainingIgnoreCase(name)
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(name);
+        if (CollectionUtils.isEmpty(products)) {
+            throw new StoreException(String.format("Product with name: '%s' was not found.", name));
+        }
+
+        return itemRepository.findByProductIn(products)
                 .stream()
-                .map(Product::getItems)
-                .flatMap(List::stream)
                 .map(MapperUtil::toItemDTO)
                 .collect(Collectors.toList());
     }
@@ -47,15 +51,16 @@ public class ItemsService {
     public ItemDTO getById(Long id) throws StoreException {
         log.info("Retrieve product by id: " + id);
         return toItemDTO(itemRepository.findById(id)
-                .orElseThrow(() -> new StoreException(String.format("Item with id: %d was not found.", id))));
+                .orElseThrow(() -> new StoreException(String.format("Item with id: '%d' was not found.", id))));
     }
 
-    public void updatePrice(Long id, Float price) throws StoreException {
+    public ItemDTO updatePrice(Long id, Float price) throws StoreException {
         log.info("Update Item with id: " + id + " with new price: " + price);
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new StoreException(String.format("Item with id: %d was not found.", id)));
+                .orElseThrow(() -> new StoreException(String.format("Item with id: '%d' was not found.", id)));
         item.setPrice(price);
         itemRepository.save(item);
+        return toItemDTO(item);
     }
 
     public void addItem(ItemDTO itemDTO) throws StoreException {
@@ -63,12 +68,12 @@ public class ItemsService {
         Product product = productRepository
                 .findById(itemDTO.getProductDTO().getId())
                 .orElseThrow(() -> new StoreException(String
-                        .format("Product with id: %d was not found.", itemDTO.getProductDTO().getId())));
+                        .format("Product with id: '%d' was not found.", itemDTO.getProductDTO().getId())));
 
         Brand brand = brandRepository
                 .findById(itemDTO.getBrandDTO().getId())
                 .orElseThrow(() -> new StoreException(String
-                        .format("Product with id: %d was not found.", itemDTO.getBrandDTO().getId())));
+                        .format("Product with id: '%d' was not found.", itemDTO.getBrandDTO().getId())));
 
         Item item = Item.builder()
                 .sku(itemDTO.getSku())

@@ -1,9 +1,7 @@
 package com.wagner.store.dao.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +11,9 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Brand implements Serializable {
 
     private Date createdAt;

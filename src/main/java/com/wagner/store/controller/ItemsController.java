@@ -27,7 +27,13 @@ public class ItemsController {
 
     @GetMapping("/search")
     public List<ItemDTO> getByProductName(@RequestParam("productName") String productName) {
-        return itemsService.getByProductName(productName);
+        try {
+            return itemsService.getByProductName(productName);
+        } catch (StoreException e) {
+            log.warn("Product with name: " + productName + " was not found: " + e.getMessage());
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @GetMapping("/search/{id}")

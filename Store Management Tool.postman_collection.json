@@ -10,7 +10,19 @@
 			"name": "Products - get all",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -18,7 +30,20 @@
 			"name": "Products - get by id",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/products/search/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						"search",
+						"10"
+					]
+				}
 			},
 			"response": []
 		},
@@ -26,7 +51,25 @@
 			"name": "Products - get by name",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/products/search?name=volley",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "volley"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -105,7 +148,20 @@
 			"name": "Items - search by id",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/items/search/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"items",
+						"search",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -113,15 +169,55 @@
 			"name": "Items - get by product",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/items/search?productName=ball",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"items",
+						"search"
+					],
+					"query": [
+						{
+							"key": "productName",
+							"value": "ball"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Items - update price",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 199\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/items/updatePrice/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"items",
+						"updatePrice",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -132,7 +228,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"test1\",\r\n    \"description\": \"description test 1\",\r\n    \"category\": {\r\n        \"id\": 1\r\n    }\r\n}",
+					"raw": "{\r\n    \"sku\": \"XYZ12399\",\r\n    \"price\": 15.0,\r\n    \"quantity\": 23,\r\n    \"sold\": 0,\r\n    \"available\": 23,\r\n    \"productDTO\": {\r\n        \"id\": 2\r\n    },\r\n    \"brandDTO\": {\r\n        \"id\": 1\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -140,14 +236,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/products/",
+					"raw": "http://localhost:8080/items/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"products",
+						"items",
 						""
 					]
 				}

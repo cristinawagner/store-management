@@ -43,13 +43,13 @@ public class ProductsService {
     public ProductDTO getById(Long id) throws StoreException {
         log.info("Retrieve product by id: " + id);
         return toProductDTO(productRepository.findById(id)
-                .orElseThrow(() -> new StoreException(String.format("Product with id: %d was not found.", id))));
+                .orElseThrow(() -> new StoreException(String.format("Product with id: '%d' was not found.", id))));
     }
 
     public List<ProductDTO> getByCategoryId(Long categoryId) throws StoreException {
         log.info("Retrieve products by category id: " + categoryId);
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new StoreException(String.format("Category with id: %d was not found.", categoryId)));
+                .orElseThrow(() -> new StoreException(String.format("Category with id: '%d' was not found.", categoryId)));
         return productRepository.findByCategory(category)
                 .stream()
                 .map(MapperUtil::toProductDTO)
@@ -61,7 +61,7 @@ public class ProductsService {
         Category category = categoryRepository
                 .findById(productDTO.getCategory().getId())
                 .orElseThrow(() -> new StoreException(String
-                        .format("Category with id: %d was not found.", productDTO.getCategory().getId())));
+                        .format("Category with id: '%d' was not found.", productDTO.getCategory().getId())));
 
         Product product = Product.builder()
                 .name(productDTO.getName())
